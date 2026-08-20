@@ -1,6 +1,6 @@
 package frc.robot.util.sim;
 
-import edu.wpi.first.epilogue.Logged;
+import org.wpilib.epilogue.Logged;
 
 @Logged
 public class Mechanisms {
