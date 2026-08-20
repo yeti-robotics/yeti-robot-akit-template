@@ -5,9 +5,16 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import com.ctre.phoenix6.swerve.SwerveModuleConstants;
+import frc.robot.constants.Constants;
+import org.littletonrobotics.junction.LogFileUtil;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.CommandScheduler;
 
 /**
  * The VM is configured to automatically run this class, and to call the methods corresponding to
@@ -15,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
     private Command autonomousCommand;
 
     private RobotContainer robotContainer;
@@ -24,10 +31,36 @@ public class Robot extends TimedRobot {
      * This method is run when the robot is first started up and should be used for any
      * initialization code.
      */
-    @Override
-    public void robotInit() {
-        // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-        // autonomous chooser on the dashboard.
+    public Robot() {
+        // Record metadata
+        Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
+        Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
+        Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+        Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
+        Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
+        switch (BuildConstants.DIRTY) {
+            case 0:
+                Logger.recordMetadata("GitDirty", "All changes committed");
+                break;
+            case 1:
+                Logger.recordMetadata("GitDirty", "Uncomitted changes");
+                break;
+            default:
+                Logger.recordMetadata("GitDirty", "Unknown");
+                break;
+        }
+
+        // Set up data receivers & replay source
+
+
+        // Start AdvantageKit logger
+        Logger.start();
+
+        // Check for valid swerve config
+
+
+        // Instantiate our RobotContainer. This will perform all our button bindings,
+        // and put our autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
     }
 
@@ -63,7 +96,7 @@ public class Robot extends TimedRobot {
 
         // schedule the autonomous command (example)
         if (autonomousCommand != null) {
-            autonomousCommand.schedule();
+            CommandScheduler.getInstance().schedule(autonomousCommand);
         }
     }
 
@@ -85,16 +118,6 @@ public class Robot extends TimedRobot {
     /** This method is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {}
-
-    @Override
-    public void testInit() {
-        // Cancels all running commands at the start of test mode.
-        CommandScheduler.getInstance().cancelAll();
-    }
-
-    /** This method is called periodically during test mode. */
-    @Override
-    public void testPeriodic() {}
 
     /** This method is called once when the robot is first started up. */
     @Override
