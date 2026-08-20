@@ -13,17 +13,16 @@
 
 package frc.robot.subsystems.vision;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform3d;
 import org.photonvision.PhotonUtils;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.geometry.Transform3d;
 
 import java.util.function.Supplier;
 
-import static frc.robot.constants.FieldConstants.Hub.centerHubOpening;
 import static frc.robot.subsystems.vision.VisionConstants.aprilTagLayout;
 
 /** IO implementation for physics sim using PhotonVision simulator. */
@@ -59,7 +58,5 @@ public class VisionIOPhotonVisionSim extends VisionIOPhotonVision {
     public void updateInputs(VisionIOInputs inputs) {
         visionSim.update(poseSupplier.get());
         super.updateInputs(inputs);
-        inputs.distanceToTag = PhotonUtils.getDistanceToPose(
-                poseSupplier.get(), new Pose2d(centerHubOpening.toTranslation2d(), new Rotation2d()));
     }
 }

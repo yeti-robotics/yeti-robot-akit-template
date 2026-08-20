@@ -13,15 +13,17 @@
 
 package frc.robot.subsystems.vision;
 
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.DoubleArrayPublisher;
-import edu.wpi.first.networktables.DoubleArraySubscriber;
-import edu.wpi.first.networktables.DoubleSubscriber;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.RobotController;
+
+
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.geometry.Rotation3d;
+import org.wpilib.math.util.Units;
+import org.wpilib.networktables.DoubleArrayPublisher;
+import org.wpilib.networktables.DoubleArraySubscriber;
+import org.wpilib.networktables.DoubleSubscriber;
+import org.wpilib.networktables.NetworkTableInstance;
+import org.wpilib.math.geometry.Pose3d;
+import org.wpilib.system.RobotController;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -69,7 +71,7 @@ public class VisionIOLimelight implements VisionIO {
         // Update connection status based on whether an update has been seen in the last 250ms
         inputs.stdLinearTrust = this.stdLinearTrustValue;
         inputs.stdAngularTrust = this.stdAngularTrustValue;
-        inputs.connected = ((RobotController.getFPGATime() - latencySubscriber.getLastChange()) / 1000) < 250;
+        inputs.connected = ((RobotController.getTime() - latencySubscriber.getLastChange()) / 1000) < 250;
 
         // Update target observation
         inputs.latestTargetObservation = new TargetObservation(
